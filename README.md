@@ -116,9 +116,12 @@ You're done — start adding categories and items!
 
 ## Using it
 
-- **Categories** group your stuff (Phones, Computers, …). Two example
-  categories ship in `data/categories.json`; edit or delete them from the
-  dashboard.
+- **Landing page** — the homepage is a personal "About" page (hero, profile
+  card with avatar/location/Discord/tags, an About + Goals section, "Core
+  Interests" cards, and a closing call-to-action). Edit all of it, and upload
+  a profile picture, from **/admin → Landing page**.
+- **Categories** group your stuff (Phones, Computers, …). Example categories
+  ship as defaults; edit or delete them from the dashboard.
 - **Items** belong to a category and have a title, optional date, description,
   a list of **spec** key/value rows, and any number of **images**. The first
   image is used as the cover.

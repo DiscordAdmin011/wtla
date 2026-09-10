@@ -37,6 +37,34 @@
         });
     }
 
+    // ---- Interest rows: add / remove (landing page editor) ---------------
+    var interestRows = document.getElementById('interestRows');
+    var addInterest = document.getElementById('addInterest');
+
+    if (addInterest && interestRows) {
+        addInterest.addEventListener('click', function () {
+            var row = document.createElement('div');
+            row.className = 'interest-edit-row';
+            row.innerHTML =
+                '<input type="text" name="interest_icon[]" placeholder="Icon (emoji)" class="interest-edit-row__icon">' +
+                '<input type="text" name="interest_title[]" placeholder="Title">' +
+                '<input type="text" name="interest_text[]" placeholder="Description">' +
+                '<button type="button" class="icon-btn" data-remove-interest title="Remove">×</button>';
+            interestRows.appendChild(row);
+        });
+
+        interestRows.addEventListener('click', function (ev) {
+            var btn = ev.target.closest('[data-remove-interest]');
+            if (!btn) return;
+            var rows = interestRows.querySelectorAll('.interest-edit-row');
+            if (rows.length > 1) {
+                btn.closest('.interest-edit-row').remove();
+            } else {
+                btn.closest('.interest-edit-row').querySelectorAll('input').forEach(function (i) { i.value = ''; });
+            }
+        });
+    }
+
     // ---- Image removal toggles -------------------------------------------
     document.querySelectorAll('[data-toggle-remove]').forEach(function (btn) {
         btn.addEventListener('click', function () {

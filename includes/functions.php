@@ -119,6 +119,48 @@ function entries_for_category(string $categoryId): array
 }
 
 // ---------------------------------------------------------------------------
+// Profile (the landing / "About" page content)
+// ---------------------------------------------------------------------------
+function profile_defaults(): array
+{
+    return [
+        'kicker'            => 'Background',
+        'hero_title'        => 'About Me',
+        'hero_subtitle'     => '',
+        'name'              => SITE_TITLE,
+        'subtitle'          => '',
+        'avatar'            => '',
+        'location'          => '',
+        'discord'           => '',
+        'contact_url'       => '',
+        'tags'              => [],
+        'about'             => '',
+        'goals'             => '',
+        'interests'         => [],
+        'interests_summary' => '',
+        'find_here_title'   => "What You'll Find Here",
+        'find_here_text'    => '',
+        'cta_label'         => 'Get In Touch',
+    ];
+}
+
+function get_profile(): array
+{
+    $data = load_json('profile.json', []);
+    if (!is_array($data)) {
+        $data = [];
+    }
+    $profile = array_merge(profile_defaults(), $data);
+    if (!is_array($profile['tags'])) {
+        $profile['tags'] = [];
+    }
+    if (!is_array($profile['interests'])) {
+        $profile['interests'] = [];
+    }
+    return $profile;
+}
+
+// ---------------------------------------------------------------------------
 // Pages (free-form tabbed content: About Me, Resources, …)
 // ---------------------------------------------------------------------------
 function get_pages(bool $publishedOnly = false): array
