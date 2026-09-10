@@ -1,0 +1,20 @@
+[
+    {
+        "id": "seedphones01",
+        "name": "Phones",
+        "slug": "phones",
+        "icon": "📱",
+        "description": "Phones I use and have used.",
+        "order": 0,
+        "created": "2026-01-01T00:00:00+00:00"
+    },
+    {
+        "id": "seedcomputer1",
+        "name": "Computers",
+        "slug": "computers",
+        "icon": "💻",
+        "description": "Desktops, laptops and their specs.",
+        "order": 1,
+        "created": "2026-01-01T00:00:00+00:00"
+    }
+]

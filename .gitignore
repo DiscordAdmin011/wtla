@@ -1,0 +1,15 @@
+# Secrets & runtime data — never commit these
+data/auth.json
+data/*.tmp
+
+# Uploaded images (keep the folder, ignore its contents)
+uploads/*
+!uploads/.gitkeep
+!uploads/.htaccess
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
