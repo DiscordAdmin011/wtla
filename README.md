@@ -80,9 +80,12 @@ Use whichever you prefer:
   deploy updates later.
 - **File Manager / FTP:** upload the whole project into the document root.
 
-> The `data/auth.json` file (your login) and everything in `uploads/` are
-> **git-ignored** on purpose, so pulling updates never overwrites your
-> content or credentials.
+> **Your content survives deploys.** Your live data (`data/*.json`), your
+> login (`data/auth.json`), and your uploaded images (`uploads/`) are all
+> **git-ignored**, so pulling updates never overwrites them. The starter
+> content ships separately in `data/defaults/` and is copied into your live
+> data **once**, the first time the site runs. See
+> [How your data is stored](#how-your-data-is-stored) below.
 
 ### 4. Make `data/` and `uploads/` writable
 
@@ -125,6 +128,48 @@ You're done — start adding categories and items!
 
 ---
 
+## How your data is stored
+
+Your content is kept in plain JSON files, split into two groups so that
+deploying new code never wipes what you've entered:
+
+| Location | Tracked in git? | What it is |
+|---|---|---|
+| `data/defaults/*.json` | ✅ yes | **Starter content** shipped with the code. Read-only in practice. |
+| `data/*.json` | ❌ no (git-ignored) | **Your live content** — written by the app, owned by you. |
+| `data/auth.json` | ❌ no | Your login (bcrypt hash). |
+| `uploads/` | ❌ no | Your uploaded images. |
+
+The first time the site runs, each live file (e.g. `data/categories.json`) is
+created by copying its default (`data/defaults/categories.json`). From then on
+the app only ever reads and writes the **live** file. Because live files are
+git-ignored, a `git pull` / redeploy updates the code and the defaults but
+**leaves your live content untouched**.
+
+> **Editing the starter content:** changing `data/defaults/*.json` only affects
+> a *brand-new* install (one with no live files yet). To change what's already
+> on your live site, edit through `/admin` — that's your real data.
+
+> **Starting over:** to wipe your live content back to the starter set, delete
+> the live files on the server (`data/categories.json`, `data/entries.json`,
+> `data/pages.json`) and reload — they'll be re-seeded from the defaults.
+
+### Advanced: surviving a "clean checkout" deploy
+
+The setup above protects you against normal `git pull` / `git reset` deploys
+(the Plesk default), where git-ignored files are left alone. If your deploy is
+configured to do a **fresh clone** or runs `git clean` (which removes *all*
+untracked files, including your data and uploads), point the app at a data
+folder **outside** the deployment directory: set the environment variable
+`WTLA_DATA_DIR` (Plesk: **Websites & Domains → PHP Settings**, or the domain's
+environment variables) to something like
+`/var/www/vhosts/yourdomain/private/wtla-data`. The app will store all live
+JSON there instead of in `./data`. (Uploaded images always stay in `uploads/`
+because the browser needs to fetch them, so a `git clean` deploy still isn't
+recommended.)
+
+---
+
 ## Resetting your password
 
 If you get locked out, delete `data/auth.json` on the server (File Manager or
@@ -161,11 +206,14 @@ case the bundled `.htaccess` files already handle this.)
 ├── index.php            # Home — lists categories
 ├── category.php         # One category — lists its items
 ├── entry.php            # One item — gallery + specs
+├── page.php             # A free-form page (About Me, Resources, …)
 ├── includes/            # config, shared functions, header/footer
 ├── admin/               # login, setup, dashboard, editors, delete handler
-├── assets/css/style.css # all styling (light/dark aware)
-├── assets/js/           # gallery + admin editor scripts
-├── data/                # JSON storage (auth.json is git-ignored)
+├── assets/css/style.css # all styling (near-black + blue, light/dark aware)
+├── assets/js/           # gallery, scroll-reveal + nav, admin editor scripts
+├── data/
+│   ├── defaults/        # starter content (tracked in git)
+│   └── *.json           # your live content (git-ignored, created on first run)
 └── uploads/             # uploaded images (git-ignored)
 ```
 

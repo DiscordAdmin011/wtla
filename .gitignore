@@ -1,5 +1,7 @@
-# Secrets & runtime data — never commit these
-data/auth.json
+# Live, writable data — never commit these. They are seeded from data/defaults/
+# on first run and are owned by the app, so deploys never overwrite your content.
+# (data/defaults/*.json lives in a subfolder and stays tracked.)
+data/*.json
 data/*.tmp
 
 # Uploaded images (keep the folder, ignore its contents)

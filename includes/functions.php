@@ -19,6 +19,17 @@ function e($value): string
 function load_json(string $file, $default = [])
 {
     $path = DATA_PATH . '/' . $file;
+
+    // First run: seed the live file from the tracked default, if one exists.
+    // After this, the live file is owned by the app and never overwritten by
+    // a deploy (it's git-ignored), so your edits persist.
+    if (!is_file($path)) {
+        $seed = DEFAULTS_PATH . '/' . $file;
+        if (is_file($seed) && is_dir(DATA_PATH) && is_writable(DATA_PATH)) {
+            @copy($seed, $path);
+        }
+    }
+
     if (!is_file($path)) {
         return $default;
     }

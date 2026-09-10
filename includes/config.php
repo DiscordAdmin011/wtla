@@ -12,8 +12,22 @@ define('SITE_TITLE',   "Ichigo's Hub");
 define('SITE_TAGLINE', ''); // Leave empty to hide it; add a line here anytime.
 
 // ---- Paths (filesystem) --------------------------------------------------
-define('ROOT_PATH',    dirname(__DIR__));
-define('DATA_PATH',    ROOT_PATH . '/data');
+define('ROOT_PATH', dirname(__DIR__));
+
+// Live, writable data lives in DATA_PATH. These files are NOT tracked in git,
+// so deploying new code never overwrites your content. On first run they are
+// seeded automatically from the read-only defaults in DEFAULTS_PATH (tracked).
+//
+// Advanced/optional: to make data survive even a "fresh checkout" style deploy,
+// set the WTLA_DATA_DIR environment variable in Plesk to a folder OUTSIDE your
+// document root (e.g. /var/www/vhosts/yourdomain/private/wtla-data). Leave it
+// unset to use the default ./data folder, which already survives normal
+// git pull / reset deploys.
+$dataDirEnv = getenv('WTLA_DATA_DIR');
+define('DATA_PATH', ($dataDirEnv !== false && $dataDirEnv !== '')
+    ? rtrim($dataDirEnv, '/')
+    : ROOT_PATH . '/data');
+define('DEFAULTS_PATH', ROOT_PATH . '/data/defaults');
 define('UPLOAD_PATH',  ROOT_PATH . '/uploads');
 
 // ---- Paths (URLs) --------------------------------------------------------
