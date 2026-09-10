@@ -1,0 +1,35 @@
+{
+    "kicker": "Background",
+    "hero_title": "About Ichigo",
+    "hero_subtitle": "A bit about me, what I'm working on, and what I enjoy tinkering with.",
+    "name": "Ichigo",
+    "subtitle": "TECH & PERIPHERALS",
+    "avatar": "",
+    "location": "United Kingdom",
+    "discord": "theukgovernment",
+    "contact_url": "",
+    "tags": ["Developer", "Creator", "Hardware Enthusiast"],
+    "about": "This is currently a work in progress website, I'll just fill this in when I can be bothered to do so. I have a lot of projects and ideas in mind, but I just need to find the time to work on them.\n\nI hope you enjoy your stay here, and if you have any questions or suggestions, feel free to reach out!",
+    "goals": "I like building things that are simple, fast, and actually useful — whether that's custom 3D-printed mouse shells, software tools, or documenting audio and PC gear.",
+    "interests": [
+        {
+            "icon": "⌨️",
+            "title": "Custom Keyboards",
+            "text": "Fascinated by custom mechanical keyboards, layouts, switches, and tuning acoustic profiles for a perfect typing feel."
+        },
+        {
+            "icon": "🎧",
+            "title": "Hi-Fi Audio",
+            "text": "Appreciation for in-ear monitors (IEMs), dynamic responses, and pure, reference-grade studio audio performance."
+        },
+        {
+            "icon": "🎛️",
+            "title": "Custom Mouse Mods & 3D Printing",
+            "text": "Tinkering with ultra-lightweight custom gaming mouse designs, modifying shape parameters for optimal grip ergonomics, and leveraging 3D printing to create beautiful, structural, physical hardware modifications."
+        }
+    ],
+    "interests_summary": "Beyond the screen, I have a deep interest in custom mechanical keyboards, high-fidelity audio, and PC hardware. I'm always tinkering with my setup to get the best possible experience. This passion for hardware often inspires my digital projects, pushing me to create things that are both technically sound and beautifully designed.",
+    "find_here_title": "What You'll Find Here",
+    "find_here_text": "This site serves as a central hub for my work, thoughts, and discoveries. You'll find detailed write-ups of my projects, honest reviews of gear I use, and a collection of resources like spreadsheets and articles that I've found helpful.",
+    "cta_label": "Get In Touch"
+}

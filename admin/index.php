@@ -13,6 +13,7 @@ $pages = get_pages();
 <div class="admin-head">
     <h1>Dashboard</h1>
     <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn btn--ghost btn--sm" href="<?= e(url('admin/profile-edit.php')) ?>">Edit landing</a>
         <a class="btn btn--ghost btn--sm" href="<?= e(url('admin/page-edit.php')) ?>">+ Page</a>
         <a class="btn btn--ghost btn--sm" href="<?= e(url('admin/category-edit.php')) ?>">+ Category</a>
         <a class="btn btn--sm" href="<?= e(url('admin/entry-edit.php')) ?>">+ Item</a>

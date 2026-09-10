@@ -13,6 +13,31 @@
         });
     }
 
+    // ---- Click-to-copy (Discord handle, etc.) -----------------------------
+    document.querySelectorAll('.copy-btn[data-copy]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+            var text = btn.getAttribute('data-copy');
+            var done = function () {
+                var icon = btn.querySelector('.copy-icon');
+                var original = icon ? icon.textContent : '';
+                btn.classList.add('copied');
+                if (icon) { icon.textContent = '✓'; }
+                setTimeout(function () {
+                    btn.classList.remove('copied');
+                    if (icon) { icon.textContent = original; }
+                }, 1400);
+            };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(done).catch(function () {});
+            } else {
+                var ta = document.createElement('textarea');
+                ta.value = text; document.body.appendChild(ta); ta.select();
+                try { document.execCommand('copy'); done(); } catch (e) {}
+                document.body.removeChild(ta);
+            }
+        });
+    });
+
     // ---- Scroll reveal ----------------------------------------------------
     var els = document.querySelectorAll('.reveal');
     var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
