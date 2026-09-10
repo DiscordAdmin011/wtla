@@ -10,7 +10,9 @@ require __DIR__ . '/includes/header.php';
 
 <div class="page-head">
     <h1>Welcome 👋</h1>
-    <p><?= e(SITE_TAGLINE) ?></p>
+    <?php if (SITE_TAGLINE !== ''): ?>
+        <p><?= e(SITE_TAGLINE) ?></p>
+    <?php endif; ?>
 </div>
 
 <?php foreach (take_flashes() as $f): ?>

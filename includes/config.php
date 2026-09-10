@@ -8,8 +8,8 @@
  */
 
 // ---- Site identity -------------------------------------------------------
-define('SITE_TITLE',   'My Life Stuff');
-define('SITE_TAGLINE', 'Phones, computers & everything I own');
+define('SITE_TITLE',   "Ichigo's Hub");
+define('SITE_TAGLINE', ''); // Leave empty to hide it; add a line here anytime.
 
 // ---- Paths (filesystem) --------------------------------------------------
 define('ROOT_PATH',    dirname(__DIR__));
