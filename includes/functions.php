@@ -108,6 +108,135 @@ function entries_for_category(string $categoryId): array
 }
 
 // ---------------------------------------------------------------------------
+// Pages (free-form tabbed content: About Me, Resources, …)
+// ---------------------------------------------------------------------------
+function get_pages(bool $publishedOnly = false): array
+{
+    $pages = load_json('pages.json', []);
+    if ($publishedOnly) {
+        $pages = array_filter($pages, fn($p) => !empty($p['published']));
+    }
+    $pages = array_values($pages);
+    usort($pages, fn($a, $b) => ($a['order'] ?? 0) <=> ($b['order'] ?? 0));
+    return $pages;
+}
+
+function find_page(string $id): ?array
+{
+    foreach (get_pages() as $page) {
+        if (($page['id'] ?? '') === $id) {
+            return $page;
+        }
+    }
+    return null;
+}
+
+function find_page_by_slug(string $slug): ?array
+{
+    foreach (get_pages() as $page) {
+        if (($page['slug'] ?? '') === $slug) {
+            return $page;
+        }
+    }
+    return null;
+}
+
+// ---------------------------------------------------------------------------
+// Navigation — merges pages + categories into one ordered tab list.
+// ---------------------------------------------------------------------------
+function nav_items(): array
+{
+    $items = [];
+    foreach (get_pages(true) as $p) {
+        $items[] = [
+            'key'   => 'page:' . ($p['slug'] ?? ''),
+            'label' => ($p['nav_label'] ?? '') !== '' ? $p['nav_label'] : ($p['title'] ?? 'Page'),
+            'url'   => url('page.php?p=' . rawurlencode($p['slug'] ?? '')),
+            'order' => $p['order'] ?? 0,
+        ];
+    }
+    foreach (get_categories() as $c) {
+        $items[] = [
+            'key'   => 'category:' . ($c['slug'] ?? ''),
+            'label' => $c['name'] ?? 'Category',
+            'url'   => url('category.php?c=' . rawurlencode($c['slug'] ?? '')),
+            'order' => $c['order'] ?? 0,
+        ];
+    }
+    usort($items, fn($a, $b) => ($a['order'] <=> $b['order']));
+    return $items;
+}
+
+// ---------------------------------------------------------------------------
+// Minimal, safe text formatter for page bodies.
+// Escapes everything first, then adds a small markdown-ish subset:
+//   # / ## / ### headings, **bold**, *italic*, [text](url), - lists, links.
+// Because we escape before transforming, raw HTML can never be injected.
+// ---------------------------------------------------------------------------
+function md_inline(string $s): string
+{
+    $s = e($s);
+    // [text](url) — only http(s), mailto, or site-relative links.
+    $s = preg_replace_callback(
+        '/\[([^\]]+)\]\((https?:\/\/[^\s)]+|mailto:[^\s)]+|\/[^\s)]*)\)/',
+        fn($m) => '<a href="' . $m[2] . '" target="_blank" rel="noopener">' . $m[1] . '</a>',
+        $s
+    );
+    $s = preg_replace('/\*\*([^*]+)\*\*/', '<strong>$1</strong>', $s);
+    $s = preg_replace('/(?<!\*)\*([^*\s][^*]*)\*(?!\*)/', '<em>$1</em>', $s);
+    // Bare URLs (skip ones already inside an href="" or after >).
+    $s = preg_replace(
+        '/(?<![">\/])(https?:\/\/[^\s<]+)/',
+        '<a href="$1" target="_blank" rel="noopener">$1</a>',
+        $s
+    );
+    return $s;
+}
+
+function render_markdown(string $text): string
+{
+    $text = str_replace(["\r\n", "\r"], "\n", trim($text));
+    if ($text === '') {
+        return '';
+    }
+    $blocks = preg_split('/\n{2,}/', $text);
+    $out = [];
+
+    foreach ($blocks as $block) {
+        $lines = explode("\n", $block);
+
+        // Bullet list — every line starts with "- " or "* ".
+        $isList = true;
+        foreach ($lines as $l) {
+            if (!preg_match('/^\s*[-*]\s+/', $l)) {
+                $isList = false;
+                break;
+            }
+        }
+        if ($isList) {
+            $items = '';
+            foreach ($lines as $l) {
+                $items .= '<li>' . md_inline(preg_replace('/^\s*[-*]\s+/', '', $l)) . '</li>';
+            }
+            $out[] = '<ul>' . $items . '</ul>';
+            continue;
+        }
+
+        // Heading — a one-line block that starts with #, ##, or ###.
+        if (count($lines) === 1 && preg_match('/^(#{1,3})\s+(.*)$/', $lines[0], $m)) {
+            $level = strlen($m[1]) + 1; // h2 / h3 / h4
+            $out[] = "<h$level>" . md_inline($m[2]) . "</h$level>";
+            continue;
+        }
+
+        // Paragraph — preserve single line breaks as <br>.
+        $out[] = '<p>' . implode('<br>', array_map('md_inline', $lines)) . '</p>';
+    }
+
+    return implode("\n", $out);
+}
+
+// ---------------------------------------------------------------------------
 // IDs & slugs
 // ---------------------------------------------------------------------------
 function generate_id(): string

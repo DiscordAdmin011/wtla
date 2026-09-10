@@ -14,13 +14,14 @@ if (!$category) {
 }
 
 $entries = entries_for_category($category['id']);
+$activeNav = 'category:' . $category['slug'];
 $pageTitle = $category['name'] . ' — ' . SITE_TITLE;
 require __DIR__ . '/includes/header.php';
 ?>
 
 <div class="breadcrumb"><a href="<?= e(url()) ?>">Home</a> / <?= e($category['name']) ?></div>
 
-<div class="page-head">
+<div class="page-head reveal">
     <h1><?= e($category['icon'] ?? '📦') ?> <?= e($category['name']) ?></h1>
     <?php if (!empty($category['description'])): ?>
         <p><?= e($category['description']) ?></p>
@@ -37,10 +38,10 @@ require __DIR__ . '/includes/header.php';
     </div>
 <?php else: ?>
     <div class="grid">
-        <?php foreach ($entries as $entry):
+        <?php foreach ($entries as $i => $entry):
             $cover = !empty($entry['images']) ? $entry['images'][0] : null;
         ?>
-            <a class="card" href="<?= e(url('entry.php?e=' . rawurlencode($entry['slug']))) ?>">
+            <a class="card reveal" style="--i:<?= (int)$i ?>" href="<?= e(url('entry.php?e=' . rawurlencode($entry['slug']))) ?>">
                 <div class="card__media <?= $cover ? '' : 'card__media--emoji' ?>">
                     <?php if ($cover): ?>
                         <img src="<?= e(upload_url($cover)) ?>" alt="<?= e($entry['title']) ?>" loading="lazy">

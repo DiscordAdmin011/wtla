@@ -17,6 +17,7 @@ $category = find_category($entry['categoryId'] ?? '');
 $images = $entry['images'] ?? [];
 $specs = $entry['specs'] ?? [];
 
+$activeNav = $category ? 'category:' . $category['slug'] : '';
 $pageTitle = $entry['title'] . ' — ' . SITE_TITLE;
 require __DIR__ . '/includes/header.php';
 ?>
@@ -29,7 +30,7 @@ require __DIR__ . '/includes/header.php';
     <?= e($entry['title']) ?>
 </div>
 
-<article class="entry-detail">
+<article class="entry-detail reveal">
     <div class="gallery">
         <div class="gallery__main">
             <?php if (!empty($images)): ?>

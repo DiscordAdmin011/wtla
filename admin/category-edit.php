@@ -17,6 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = trim($_POST['name'] ?? '');
     $icon = trim($_POST['icon'] ?? '');
     $description = trim($_POST['description'] ?? '');
+    $hasOrder = isset($_POST['order']) && $_POST['order'] !== '';
+    $order = (int) ($_POST['order'] ?? 0);
 
     if ($name === '') {
         flash('Please give the category a name.', 'error');
@@ -31,7 +33,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'slug'        => unique_slug(slugify($name), $existingSlugs),
                 'icon'        => $icon !== '' ? $icon : '📦',
                 'description' => $description,
-                'order'       => count($categories),
+                'order'       => $hasOrder ? $order : count($categories) * 10,
                 'created'     => date('c'),
             ];
             $categories[] = $newCat;
@@ -48,6 +50,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $c['name'] = $name;
                     $c['icon'] = $icon !== '' ? $icon : '📦';
                     $c['description'] = $description;
+                    if ($hasOrder) {
+                        $c['order'] = $order;
+                    }
                 }
             }
             unset($c);
@@ -84,6 +89,10 @@ require __DIR__ . '/includes/admin_header.php';
     <div class="field">
         <label>Description <span class="hint">(optional)</span></label>
         <textarea name="description" placeholder="A short line about this category"><?= $val('description') ?></textarea>
+    </div>
+    <div class="field">
+        <label>Menu order <span class="hint">(lower numbers appear first in the tab bar)</span></label>
+        <input type="number" name="order" value="<?= e((string) ($category['order'] ?? '')) ?>" placeholder="auto" style="max-width:120px">
     </div>
     <div class="form-actions">
         <button class="btn" type="submit"><?= $isNew ? 'Create category' : 'Save changes' ?></button>

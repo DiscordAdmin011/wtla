@@ -7,17 +7,56 @@ require __DIR__ . '/includes/admin_header.php';
 
 $categories = get_categories();
 $entries = get_entries();
+$pages = get_pages();
 ?>
 
 <div class="admin-head">
     <h1>Dashboard</h1>
-    <div style="display:flex;gap:10px">
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn btn--ghost btn--sm" href="<?= e(url('admin/page-edit.php')) ?>">+ Page</a>
         <a class="btn btn--ghost btn--sm" href="<?= e(url('admin/category-edit.php')) ?>">+ Category</a>
         <a class="btn btn--sm" href="<?= e(url('admin/entry-edit.php')) ?>">+ Item</a>
     </div>
 </div>
 
-<h2 style="font-size:18px;margin:0 0 12px">Categories</h2>
+<h2 style="font-size:18px;margin:0 0 12px">Pages <span class="hint" style="font-weight:400;font-size:13px;color:var(--text-muted)">(tabs like About &amp; Resources)</span></h2>
+<?php if (empty($pages)): ?>
+    <div class="empty" style="padding:34px">
+        <p>No pages yet. Add free-form pages like “About Me” — they appear as tabs.</p>
+        <a class="btn" href="<?= e(url('admin/page-edit.php')) ?>">+ New page</a>
+    </div>
+<?php else: ?>
+    <table class="table">
+        <thead>
+        <tr><th>Title</th><th>Tab label</th><th>Order</th><th>Status</th><th></th></tr>
+        </thead>
+        <tbody>
+        <?php foreach ($pages as $p): ?>
+            <tr>
+                <td><strong><?= e($p['title']) ?></strong></td>
+                <td><?= e(($p['nav_label'] ?? '') !== '' ? $p['nav_label'] : $p['title']) ?></td>
+                <td><span class="badge"><?= (int) ($p['order'] ?? 0) ?></span></td>
+                <td><?= !empty($p['published'])
+                        ? '<span class="badge" style="color:var(--success-text)">Published</span>'
+                        : '<span class="badge">Draft</span>' ?></td>
+                <td class="actions">
+                    <a class="btn btn--ghost btn--sm" href="<?= e(url('page.php?p=' . rawurlencode($p['slug']))) ?>" target="_blank">View</a>
+                    <a class="btn btn--ghost btn--sm" href="<?= e(url('admin/page-edit.php?id=' . rawurlencode($p['id']))) ?>">Edit</a>
+                    <form method="post" action="<?= e(url('admin/delete.php')) ?>" style="display:inline"
+                          onsubmit="return confirm('Delete page &quot;<?= e($p['title']) ?>&quot;?');">
+                        <?= csrf_field() ?>
+                        <input type="hidden" name="type" value="page">
+                        <input type="hidden" name="id" value="<?= e($p['id']) ?>">
+                        <button class="btn btn--danger btn--sm" type="submit">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+        </tbody>
+    </table>
+<?php endif; ?>
+
+<h2 style="font-size:18px;margin:34px 0 12px">Categories</h2>
 <?php if (empty($categories)): ?>
     <div class="empty" style="padding:34px">
         <p>No categories yet. Create one to group your items (e.g. Phones, Computers).</p>

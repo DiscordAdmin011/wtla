@@ -19,6 +19,7 @@ $active = $active ?? '';
         <a class="admin-side__brand" href="<?= e(url('admin/')) ?>">🛠️ <?= e(SITE_TITLE) ?></a>
         <nav>
             <a href="<?= e(url('admin/')) ?>" class="<?= $active === 'dashboard' ? 'is-active' : '' ?>">Dashboard</a>
+            <a href="<?= e(url('admin/page-edit.php')) ?>" class="<?= $active === 'page' ? 'is-active' : '' ?>">+ New page</a>
             <a href="<?= e(url('admin/category-edit.php')) ?>" class="<?= $active === 'category' ? 'is-active' : '' ?>">+ New category</a>
             <a href="<?= e(url('admin/entry-edit.php')) ?>" class="<?= $active === 'entry' ? 'is-active' : '' ?>">+ New item</a>
         </nav>

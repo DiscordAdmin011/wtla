@@ -5,10 +5,11 @@ $categories = get_categories();
 $allEntries = get_entries();
 
 $pageTitle = SITE_TITLE;
+$activeNav = 'home';
 require __DIR__ . '/includes/header.php';
 ?>
 
-<div class="page-head">
+<div class="page-head reveal">
     <h1>Welcome 👋</h1>
     <?php if (SITE_TAGLINE !== ''): ?>
         <p><?= e(SITE_TAGLINE) ?></p>
@@ -31,10 +32,10 @@ require __DIR__ . '/includes/header.php';
     </div>
 <?php else: ?>
     <div class="grid">
-        <?php foreach ($categories as $cat):
+        <?php foreach ($categories as $i => $cat):
             $count = count(array_filter($allEntries, fn($en) => ($en['categoryId'] ?? '') === $cat['id']));
         ?>
-            <a class="card cat-card" href="<?= e(url('category.php?c=' . rawurlencode($cat['slug']))) ?>">
+            <a class="card cat-card reveal" style="--i:<?= (int)$i ?>" href="<?= e(url('category.php?c=' . rawurlencode($cat['slug']))) ?>">
                 <div class="card__media card__media--emoji"><?= e($cat['icon'] ?? '📦') ?></div>
                 <div class="card__body">
                     <h2 class="card__title"><?= e($cat['name']) ?></h2>

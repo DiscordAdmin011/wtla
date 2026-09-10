@@ -1,0 +1,22 @@
+[
+    {
+        "id": "pageabout001",
+        "title": "About Me",
+        "nav_label": "About",
+        "slug": "about",
+        "body": "# Hey, I'm Ichigo 👋\n\nWelcome to my hub — a little corner of the internet where I keep track of my gear, my projects, and things I find useful.\n\n## A bit about me\n\nWrite whatever you like here. You can use **bold**, *italic*, and [links](https://example.com).\n\n- Something about you\n- Another thing\n- One more\n\nEdit this page anytime from the admin panel.",
+        "order": 0,
+        "published": true,
+        "created": "2026-01-01T00:00:00+00:00"
+    },
+    {
+        "id": "pageresource1",
+        "title": "Resources",
+        "nav_label": "Resources",
+        "slug": "resources",
+        "body": "# Resources\n\nA few links and tools I find handy.\n\n- [Example resource](https://example.com)\n- [Another one](https://example.com)\n\nReplace these with your own.",
+        "order": 40,
+        "published": true,
+        "created": "2026-01-01T00:00:00+00:00"
+    }
+]

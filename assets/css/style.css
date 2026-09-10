@@ -4,14 +4,14 @@
    ========================================================================== */
 
 :root {
-    --bg: #f6f7f9;
+    --bg: #fbfcfd;
     --surface: #ffffff;
-    --surface-2: #f0f2f5;
-    --border: #e2e6ea;
-    --text: #1c2530;
-    --text-muted: #62707f;
-    --accent: #3b6cf6;
-    --accent-hover: #2f57cc;
+    --surface-2: #f2f5f9;
+    --border: #e6e9ee;
+    --text: #14161a;
+    --text-muted: #5b6673;
+    --accent: #2563eb;
+    --accent-hover: #1d4ed8;
     --danger: #d64545;
     --danger-hover: #b53838;
     --success-bg: #e6f6ec;
@@ -94,9 +94,42 @@ img { max-width: 100%; display: block; }
 .brand__text { display: flex; flex-direction: column; }
 .brand__title { font-weight: 700; font-size: 18px; }
 .brand__tagline { font-size: 12.5px; color: var(--text-muted); }
-.site-nav { display: flex; gap: 20px; font-weight: 500; font-size: 15px; }
-.site-nav a { color: var(--text-muted); }
-.site-nav a:hover { color: var(--accent); text-decoration: none; }
+.site-nav { display: flex; align-items: center; gap: 22px; font-weight: 500; font-size: 15px; }
+.tabs { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.tab {
+    color: var(--text-muted); padding: 7px 12px; border-radius: 8px;
+    position: relative; transition: color .15s ease, background .15s ease;
+}
+.tab:hover { color: var(--text); background: var(--surface-2); text-decoration: none; }
+.tab.is-active { color: var(--accent); font-weight: 600; }
+.tab.is-active::after {
+    content: ""; position: absolute; left: 12px; right: 12px; bottom: -1px; height: 2px;
+    background: var(--accent); border-radius: 2px;
+}
+.site-nav__auth { display: flex; gap: 16px; padding-left: 18px; border-left: 1px solid var(--border); }
+.site-nav__auth a { color: var(--text-muted); font-size: 14px; }
+.site-nav__auth a:hover { color: var(--accent); text-decoration: none; }
+
+/* Mobile hamburger — hidden on desktop */
+.nav-toggle { display: none; background: none; border: 0; cursor: pointer; padding: 8px; }
+.nav-toggle span { display: block; width: 22px; height: 2px; background: var(--text); margin: 4px 0; border-radius: 2px; transition: transform .2s ease, opacity .2s ease; }
+.nav-toggle.is-open span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+.nav-toggle.is-open span:nth-child(2) { opacity: 0; }
+.nav-toggle.is-open span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+@media (max-width: 760px) {
+    .nav-toggle { display: block; }
+    .site-nav {
+        display: none; width: 100%; flex-direction: column; align-items: flex-start;
+        gap: 14px; padding-top: 12px;
+    }
+    .site-nav.is-open { display: flex; }
+    .tabs { flex-direction: column; align-items: stretch; width: 100%; gap: 2px; }
+    .tab { padding: 10px 12px; }
+    .tab.is-active::after { display: none; }
+    .tab.is-active { background: var(--surface-2); }
+    .site-nav__auth { padding-left: 0; border-left: 0; border-top: 1px solid var(--border); padding-top: 12px; width: 100%; }
+}
 
 /* ---- Footer ------------------------------------------------------------- */
 .site-footer {
@@ -288,3 +321,33 @@ a.card:hover { text-decoration: none; transform: translateY(-3px); }
 .login-box { width: 100%; max-width: 380px; }
 .login-box h1 { text-align: center; font-size: 22px; margin: 0 0 4px; }
 .login-box .sub { text-align: center; color: var(--text-muted); margin: 0 0 22px; font-size: 14px; }
+
+/* ==========================================================================
+   Scroll reveal
+   ========================================================================== */
+.reveal {
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .6s cubic-bezier(.2, .6, .2, 1), transform .6s cubic-bezier(.2, .6, .2, 1);
+    transition-delay: calc(var(--i, 0) * 70ms);
+    will-change: opacity, transform;
+}
+.reveal.is-visible { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+}
+
+/* ==========================================================================
+   Prose — free-form page bodies (About Me, Resources, …)
+   ========================================================================== */
+.prose { max-width: 760px; font-size: 17px; line-height: 1.7; }
+.prose h1 { font-size: 30px; letter-spacing: -.01em; margin: 0 0 18px; }
+.prose h2 { font-size: 23px; margin: 34px 0 12px; letter-spacing: -.01em; }
+.prose h3 { font-size: 19px; margin: 26px 0 10px; }
+.prose h4 { font-size: 16px; margin: 22px 0 8px; color: var(--text-muted); }
+.prose p { margin: 0 0 16px; }
+.prose ul { margin: 0 0 16px; padding-left: 22px; }
+.prose li { margin: 4px 0; }
+.prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+.prose strong { font-weight: 700; }

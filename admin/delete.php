@@ -56,6 +56,16 @@ if ($type === 'category') {
     } else {
         flash('Item not found.', 'error');
     }
+} elseif ($type === 'page') {
+    $pages = load_json('pages.json', []);
+    $before = count($pages);
+    $pages = array_values(array_filter($pages, fn($p) => ($p['id'] ?? '') !== $id));
+    if (count($pages) < $before) {
+        save_json('pages.json', $pages);
+        flash('Page deleted.');
+    } else {
+        flash('Page not found.', 'error');
+    }
 } else {
     flash('Unknown delete request.', 'error');
 }

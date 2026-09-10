@@ -1,6 +1,8 @@
 <?php
 require_once __DIR__ . '/functions.php';
 $pageTitle = $pageTitle ?? SITE_TITLE;
+$activeNav = $activeNav ?? '';
+$navItems = nav_items();
 ?><!DOCTYPE html>
 <html lang="en">
 <head>
@@ -25,14 +27,26 @@ $pageTitle = $pageTitle ?? SITE_TITLE;
                 <?php endif; ?>
             </span>
         </a>
-        <nav class="site-nav">
-            <a href="<?= e(url()) ?>">Home</a>
-            <?php if (is_logged_in()): ?>
-                <a href="<?= e(url('admin/')) ?>">Admin</a>
-                <a href="<?= e(url('admin/logout.php')) ?>">Log out</a>
-            <?php else: ?>
-                <a href="<?= e(url('admin/login.php')) ?>">Log in</a>
-            <?php endif; ?>
+
+        <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+
+        <nav class="site-nav" id="siteNav">
+            <div class="tabs">
+                <a class="tab <?= $activeNav === 'home' ? 'is-active' : '' ?>" href="<?= e(url()) ?>">Home</a>
+                <?php foreach ($navItems as $item): ?>
+                    <a class="tab <?= $activeNav === $item['key'] ? 'is-active' : '' ?>" href="<?= e($item['url']) ?>"><?= e($item['label']) ?></a>
+                <?php endforeach; ?>
+            </div>
+            <div class="site-nav__auth">
+                <?php if (is_logged_in()): ?>
+                    <a href="<?= e(url('admin/')) ?>">Admin</a>
+                    <a href="<?= e(url('admin/logout.php')) ?>">Log out</a>
+                <?php else: ?>
+                    <a href="<?= e(url('admin/login.php')) ?>">Log in</a>
+                <?php endif; ?>
+            </div>
         </nav>
     </div>
 </header>

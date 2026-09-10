@@ -1,11 +1,20 @@
 [
     {
+        "id": "seedprojects1",
+        "name": "Projects",
+        "slug": "projects",
+        "icon": "🛠️",
+        "description": "Things I'm building and have built.",
+        "order": 10,
+        "created": "2026-01-01T00:00:00+00:00"
+    },
+    {
         "id": "seedphones01",
         "name": "Phones",
         "slug": "phones",
         "icon": "📱",
         "description": "Phones I use and have used.",
-        "order": 0,
+        "order": 20,
         "created": "2026-01-01T00:00:00+00:00"
     },
     {
@@ -14,7 +23,7 @@
         "slug": "computers",
         "icon": "💻",
         "description": "Desktops, laptops and their specs.",
-        "order": 1,
+        "order": 30,
         "created": "2026-01-01T00:00:00+00:00"
     }
 ]
